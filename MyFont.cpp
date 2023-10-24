@@ -2,6 +2,7 @@
 
 void CMyFont::Init(LPDIRECT3DDEVICE9 lpD3DDEV, int w, int h)
 {
+	LPD3DXFONT pFont = NULL;
 	HDC		hTextDC = NULL;
 	HFONT	hFont = NULL, hOldFont = NULL;
 	
@@ -19,8 +20,12 @@ void CMyFont::Init(LPDIRECT3DDEVICE9 lpD3DDEV, int w, int h)
 
 	if(!hFont) return;
 	hOldFont = (HFONT)SelectObject(hTextDC, hFont);
-	
-	if( FAILED( D3DXCreateFont( lpD3DDEV, hFont, &m_lpFont ) ) ) {
+	//D3DXCreateFont(lpD3DDEV, h, w, FW_DONTCARE, 1, FALSE, DEFAULT_CHARSET,
+		//OUT_DEFAULT_PRECIS, DRAFT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
+		//"MS °íµñ", &m_lpFont);
+	if( FAILED( D3DXCreateFont(lpD3DDEV, h, w, FW_DONTCARE, 1, FALSE, DEFAULT_CHARSET,
+	OUT_DEFAULT_PRECIS, DRAFT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
+		"MS °íµñ", & m_lpFont) ) ) {
 		MessageBox( 0, "D3DXCreateFontIndirect FALSE", "ok", MB_OK);
 		return;
 	}
@@ -37,7 +42,10 @@ void CMyFont::Print( char *str, int x, int y, D3DCOLOR color )
 	rect.top = y;
 	rect.bottom = SCREENHEIGHT;
 
-	m_lpFont->DrawText(str, -1, &rect,DT_LEFT | DT_EXPANDTABS,color);
+	//m_lpFont->DrawText(str, -1, &rect,DT_LEFT | DT_EXPANDTABS,color);
+
+	m_lpFont->DrawText(NULL, str,
+		-1, &rect, DT_LEFT | DT_EXPANDTABS, color);
 }
 
 void CMyFont::Clean()
